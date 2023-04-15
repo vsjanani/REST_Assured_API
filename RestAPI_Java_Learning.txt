@@ -65,3 +65,14 @@ give key param qaclick123 as always.
 
 Note: GET and POST are the http methods used usually. POST can take care of both update and delete if that respective api is used. 
 
+***************************************
+
+Coding:
+
+Usual eclipse create java proj, convert to maven, have dependancies in pom.xml.
+
+Basic code: 
+given (this method carries baseurl, query parameter, body-if any) 
+when (this method carries http method, resource and submit. To remember easily, top line should come in when except baseurl)
+then (verify response)
+

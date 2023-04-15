@@ -1,0 +1,10 @@
+install below softwares:
+eclipse
+java
+
+
+dependancies in pom.xml (remove <scope> tag so that, dependancies work)
+rest-assured
+testng
+hamcrest
+
