@@ -69,10 +69,107 @@ Note: GET and POST are the http methods used usually. POST can take care of both
 
 Coding:
 
+Start coding with below static imports:
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
 Usual eclipse create java proj, convert to maven, have dependancies in pom.xml.
 
 Basic code: 
 given (this method carries baseurl, query parameter, body-if any) 
 when (this method carries http method, resource and submit. To remember easily, top line should come in when except baseurl)
 then (verify response)
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+public class Basics {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		baseURI = "https://rahulshettyacademy.com";
+		given().header("Content-Type","application/json").queryParam("key", "qaclick123")
+		.body("{\r\n"
+				+ "  \"location\": {\r\n"
+				+ "    \"lat\": -38.383494,\r\n"
+				+ "    \"lng\": 33.427362\r\n"
+				+ "  },\r\n"
+				+ "  \"accuracy\": 50,\r\n"
+				+ "  \"name\": \"Simple house\",\r\n"
+				+ "  \"phone_number\": \"(+91) 983 893 3937\",\r\n"
+				+ "  \"address\": \"29, side layout, cohen 09\",\r\n"
+				+ "  \"types\": [\r\n"
+				+ "    \"shoe park\",\r\n"
+				+ "    \"shop\"\r\n"
+				+ "  ],\r\n"
+				+ "  \"website\": \"http://google.com\",\r\n"
+				+ "  \"language\": \"French-IN\"\r\n"
+				+ "}")
+		.when().post("maps/api/place/add/json")
+		.then().log().body()
+			.assertThat().statusCode(200)
+			.body("scope", equalTo("APP"))
+			.header("Server", "Apache/2.4.41 (Ubunu)");
+		//instead of log().body(), log().all() can be used if we want all the details to be diplayed.
+	}
+
+}
+
+output will be:
+{
+    "status": "OK",
+    "place_id": "1d7761aeacbadc6a2f8ce5a77edd0e0d",
+    "scope": "APP",
+    "reference": "4f446a3b89e8a2eeb1b8efabf59d9b274f446a3b89e8a2eeb1b8efabf59d9b27",
+    "id": "4f446a3b89e8a2eeb1b8efabf59d9b27"
+}
+
+Note: In then() block, header is validated.It is important to validate header to verify if response is received form expected server. Otherwise it means that, API has bug.
+
+Can use, system.out.println() to view output by saving above data to string like below:
+String strOutput = .extract().response().asString(); //.extract should be from then() Only from .extract is copied to save space. Check eclipse for brief view.
+
+Now, System.out.println(strOutput) gives output body 
+
+{"status":"OK","place_id":"1d7761aeacbadc6a2f8ce5a77edd0e0d","scope":"APP","reference":"4f446a3b89e8a2eeb1b8efabf59d9b274f446a3b89e8a2eeb1b8efabf59d9b27","id":"4f446a3b89e8a2eeb1b8efabf59d9b27"}
+
+
+JSONPath:
+
+It is just like xpath for xml. JSONPath traverse from parent to child using dot(.)
+
+Output from above is stored as string. rahulshetty received this string, created object for json class placed string inside like below:
+String strOutput = .extract().response().asString(); //.extract should be from then() Only from .extract is copied to save space. Check eclipse for brief 
+JsonPath js = new JsonPath(strOutput);
+System.out.println(js.getString("place_id"));
+
+The above code can be easily written as:
+
+JsonPath objJsonPath = .extract().response().jsonPath();
+System.out.println(objJsonPath.getString("place_id"));
+
+important note: We can verify place_id in below two methods:
+1. assertThat().body("placed_id", "12gdgfdhhfdhfdh");
+2. JsonPath objJsonPath = .extract().response().jsonPath();
+System.out.println(objJsonPath.getString("place_id")); //now assert this.
+
+But, we use jsonpath actually to get values of variables from post method and use it in get or put method.
+ 
+f60201591296ce106f737675be316d5f
+
+Test Case scenario:
+
+Post a record, update it with put request and get the record to view.
+
+Now for posting above code is used from where place_id is retrieved to use it for put request.
+
+while doing put, note below that place_id is the variable holding value. Hence it is placed as, "+place_id+". It is like, variable is placed with ++ on both sides otherwise it will become string.
+given().header("Content-Type", "application/json")
+		.body("{\r\n"
+				+ "\"place_id\":\""+place_id+ "\",\r\n"
+				+ "\"address\":\"missionhighway, USA\",\r\n"
+				+ "\"key\":\"qaclick123\"\r\n"
+				+ "}\r\n"
+				+ "");
 
