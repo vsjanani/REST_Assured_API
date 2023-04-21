@@ -36,6 +36,7 @@ public class Basics {
 				.then().log().body().assertThat().statusCode(200).extract().jsonPath();
 		System.out.println(objGetJsonPath.getString("address"));
 		Assert.assertEquals(objGetJsonPath.getString("address"), strUpdatedAddress);
+		
 
 	}
 

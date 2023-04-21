@@ -173,3 +173,46 @@ given().header("Content-Type", "application/json")
 				+ "}\r\n"
 				+ "");
 
+
+Parsing complex or nested json:
+
+Assume if dev has only output format of json but the api which produce the output is still not built. In such case, tester should not wait till api is ready. Since we have output template, tester can put the string template in json path and do rest part of execution. Once api is ready, that can be connected as input to json path.
+
+
+Dynamic Json:
+Like above, cannot use same data in api, it ll throw error as data already exists. In such case, we have to give new data each time or post and delete immediately.
+
+mostly it will be static json unless client needs to validate with multipLe data.
+
+@Test(dataProvider="sendData")
+	public void dynamicJson(String isbn, String aisle) {
+		RestAssured.baseURI = "http://216.10.245.166";
+		given()
+			.header("Content-Type","application/json")
+			.body(objBodyContent.bodyDynamicJson(isbn,aisle))
+		.when().post("Library/Addbook.php")
+		.then().log().body().assertThat().statusCode(200);
+		
+	}
+	
+	@DataProvider
+	public Object[][] sendData() {
+		return new Object[][] {{"vsj","004"},{"vsj","005"}};
+	}
+
+if static, just put the body in separate class carrying isbn and aisle as variable, return body and call that method from main method passing values of isbn and aisle.
+
+public String bodyDynamicJson(String isbn, String aisle) {
+		return "{\r\n"
+				+ "\"name\":\"Learn REST\",\r\n"
+				+ "\"isbn\":\""+isbn+"\",\r\n"
+				+ "\"aisle\":\""+aisle+"\",\r\n"
+				+ "\"author\":\"jacob andrew\"\r\n"
+				+ "}\r\n"
+				+ "";
+	}
+
+given()
+			.header("Content-Type","application/json")
+			.body(objBodyContent.bodyDynamicJson("vsj","002"))
+
