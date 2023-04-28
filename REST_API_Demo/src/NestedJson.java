@@ -41,6 +41,7 @@ public class NestedJson {
 		System.out.println(intTotal);
 		Assert.assertEquals(intTotal, 910);
 		
-		
+		JsonPath hi = new JsonPath(objBodyContent.hey());
+		System.out.println(hi.getString("fields.comment.comments.body"));
 	}
 }

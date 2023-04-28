@@ -8,3 +8,20 @@ rest-assured
 testng
 hamcrest
 
+jira:
+Google -> jira software center - atlassian - > download archive -> click- > give next next, it gets auto launched https://localhost:8080
+
+create account -> server id B64U-DF29-0CN3-RW6F
+
+NAME AND KEY:
+
+5bb5hm9
+
+RESTAPITesting RESTAPI
+
+To restart jira:
+
+Navigate to the sub-directory where the batch file "Start-jira.bat" is located, e.g.
+go to command terminal C:\Users\jansr\Atlassian\Jira\bin
+
+Once in that sub-directory type Start-jira.bat /fg and press ENTER, to load your local host 8080

@@ -216,3 +216,151 @@ given()
 			.header("Content-Type","application/json")
 			.body(objBodyContent.bodyDynamicJson("vsj","002"))
 
+To get json as an external file, use filtutils, convert to string and paste inside body. coz, all methods in rest assured accepts string or integer only.
+
+
+JIRA REST API:
+
+This is just to work on jira repository via API where we can create issues and do multiple tasks as below:
+
+Refer installation notepad for jira install.now in localhost8080 jira is opened. save all the serverids, repo name and key to access it.
+refer below link for all below jira api's and its contracts.
+
+https://docs.atlassian.com/software/jira/docs/api/REST/9.7.1/
+
+Now we are going to login jira, go into our project repo RESTAPITesting (key RESTAPI) and create issue.
+
+To restart jira, 
+
+Navigate to the sub-directory where the batch file "Start-jira.bat" is located, e.g.
+go to command terminal C:\Users\jansr\Atlassian\Jira\bin
+
+Once in that sub-directory type Start-jira.bat /fg and press ENTER, to load your local host 8080
+
+api contract(below details are obtained from jira rest url :
+Authentication:
+
+https://developer.atlassian.com/cloud/jira/platform/jira-rest-api-cookie-based-authentication/)
+baseuri - http://localhost:8080/rest/auth/1/session
+body: { "username": "janani", "password": "SanjeevKrish@01" }  //this is our jira login credentials)
+
+got this below from website: https://developer.atlassian.com/server/jira/platform/jira-rest-api-examples/
+
+create issue:
+
+http://localhost:8080/rest/api/2/issue
+Header:
+Cookie JSESSIONID=sessionkey obtained from authentication api. 
+
+{
+    "fields": {
+       "project":
+       {
+          "key": "RESTAPI"
+       },
+       "summary": "From janani summary",
+       "description": "Creating of an issue using project keys and issue type names using the REST API",
+       "issuetype": {
+          "name": "Bug"
+       }
+   }
+}
+
+above will give output as {"id":"10101","key":"RESTAPI-3","self":"http://localhost:8080/rest/api/2/issue/10101"}
+if we check jira, new issue is created.
+
+Delete issue:
+Cookie JSESSIONID=sessionkey obtained from authentication api. 
+url: http://localhost:8080/rest/api/2/issue/10101
+where 10101 is id of issue created. request type should be DELETE.
+
+add_comment:
+http://localhost:8080/rest/api/2/issue/{issueIdOrKey}/comment
+http://localhost:8080/rest/api/2/issue/RESTAPI-2/comment
+
+header as application json and session id.
+body:
+{
+    "body": "Adding comment from RESTAPI",
+    "visibility": {
+        "type": "role",
+        "value": "Administrators"
+    }
+}
+note: few success is 200 or 204 also check link for what should be the success response code. Output will be like below: In this, 10100 is the key of issueID and 10000 is the comment ID. now this comment ID can be  used to edit or delete the comment.
+
+ "self": "http://localhost:8080/rest/api/2/issue/10100/comment/10000",
+    "id": "10000",
+    "author": etc etc
+
+Update_comment:
+http://localhost:8080/rest/api/2/issue/10100/comment/10000 //note here comment id 10000 is used update comment for issue 10100.
+header as application json and session id.
+body:
+{
+    "body": "updating comment",
+    "visibility": {
+        "type": "role",
+        "value": "Administrators"
+    }
+}
+
+now if we check jira, comment would have been updated.
+got all these details from the link given in this jira topic starting.
+
+Parameters:
+parameter which comes after ? is called query parameter.
+The one which comes without ? in url is called path parameter.
+
+Note that, in contract if {} braces is given in resource, it means it is path parameter.
+http://localhost:8080/rest/api/2/issue/{issueIdOrKey}/comment //here issueid or key is path parameter which should be given directly.
+In such case in eclipse, given().pathParam() should be given instead of queryParam();
+
+Now lets do above session creation using credentials, creating issues by automation restapi.
+
+Once session is created, instead of saving in jsonpath and applying in other create issue api,
+just create object for SessionFilter class, and use filter(session) to get and apply session.
+
+public class JiraSessionAndIssueCreation {
+	
+	public JiraSessionAndIssueCreation() {		
+		baseURI = "http://localhost:8080";
+	}
+	public SessionFilter objSession;
+	
+	
+		@Test
+		public void sessionCreation() {	
+			objSession = new SessionFilter();
+			given().header("Content-Type","application/json").body("{ \"username\": \"janani\", \"password\": \"SanjeevKrish@01\" }").filter(objSession)
+			.when().post("rest/auth/1/session")
+			.then().log().all().extract().jsonPath();
+		}
+
+Here, i have added baseURI in construction. Note that, declaration can happen as class variable like sessionfilter.
+But baseURI is initialisation since baseURI is already a variable of restassured. in such case, we can use constructor.
+for get issue in jira:
+
+@Test(priority=2)
+	public void getIssue() {
+		JsonPath objJsonPath = given().filter(objSessionFilter)
+		.when().get("rest/api/2/issue/10204")
+		.then().extract().response().jsonPath();
+		System.out.println(objJsonPath.getString("fields.comment.comments.body"));
+	}
+
+to create issue:
+@Test(priority = 1)
+	public void issueCreation() {
+		given().header("Content-Type", "application/json").body()			.filter(objSession).when().post("rest/api/2/issue").then().log().body(given json content).assertThat().statusCode(201);
+	}
+To Add attachment to a issue:
+
+Note that multipart is a method used to send attachments hence header also contains content =-type as multipart. also, to avoid some threats, xsrf check is given. it is given by atlassian, hence it is default one. not to memorize, just check jira contrack page link.
+
+int intStatusCode = given().pathParam("id","10206").header("X-Atlassian-Token","no-check").header("content-type","multipart/form-data")
+		.multiPart("file",new File("infoAttach.txt"))
+		.filter(objSessionFilter)
+		.when().post("rest/api/2/issue/{id}/attachments")
+		.then().log().all().extract().response().statusCode();
+		System.out.println(intStatusCode);

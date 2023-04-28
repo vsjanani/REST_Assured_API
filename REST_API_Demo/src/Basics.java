@@ -22,7 +22,7 @@ public class Basics {
 
 		System.out.println("place_id of posted request is" + objPostJsonPath.getString("place_id"));
 		String place_id = objPostJsonPath.getString("place_id");
-		String strUpdatedAddress = "jananiHighway, USA";
+		String strUpdatedAddress = "KrishHighway, USA";
 		
 		//PUT request
 		given().header("Content-Type", "application/json")
