@@ -319,7 +319,7 @@ In such case in eclipse, given().pathParam() should be given instead of queryPar
 Now lets do above session creation using credentials, creating issues by automation restapi.
 
 Once session is created, instead of saving in jsonpath and applying in other create issue api,
-just create object for SessionFilter class, and use filter(session) to get and apply session.
+just create object for SessionFilter class, and use filter(session) to get and apply session for all the apis
 
 public class JiraSessionAndIssueCreation {
 	
@@ -364,3 +364,323 @@ int intStatusCode = given().pathParam("id","10206").header("X-Atlassian-Token","
 		.when().post("rest/api/2/issue/{id}/attachments")
 		.then().log().all().extract().response().statusCode();
 		System.out.println(intStatusCode);
+
+
+Important one:
+
+Below code to, add comment to an issue using add_comment api (note the comment id which got generated for the newly added comment), now get the issue, using get_issue api (give issue id directly), get the comment ids list, find the index of noted comment id (say if comment id is 10234 and index is 1), get body of that numbered comment id(like, comment[1].body)
+
+JsonPath objJsonPath = given().filter(objSessionFilter).pathParam("id", "10205").queryParam("fields", "comment").when().get("rest/api/2/issue/{id}").then().extract().response().jsonPath();
+		List<String> mylist = objJsonPath.get("fields.comment.comments.id");
+		int intIndexOfCommentID = mylist.indexOf(strCommentID); //strCommentID is obtained from add comment api.
+		System.out.println(objJsonPath.getString("fields.comment.comments["+intIndexOfCommentID+"].body"));
+		System.out.println(mylist.indexOf(strCommentID));		
+		System.out.println(mylist);
+
+Note that, we used queryParam to limit the parameters collected in JsonPath. It should also be mentioned in contract. Here, we limited only to comment. 
+Hence, only comment of the json output body is stored in JsonPath.
+
+*****************************************************
+
+few api has SSL as it is https method. To avoid such issues, relaxedHTTPSValidation() is used.
+ Use relaxed HTTP validation. This means that you'll trust all hosts regardless if the SSL certificate is invalid. 
+
+given().relaxedHTTPSValidation().header("Content-Type", "application/json")
+
+*****************************************************
+
+OAuth 2.0:
+login tripadvisor or bookmyshow or any websites using third party like google, linkedin, facebook etc. This type of third party authenticating to login our website is called OAuth.
+
+Here, client is tripadvisor, resource owner is human, resource or authorisation server(2 servers works here) is google.
+client ID and client secret id are the credentials provided by google to tripadvisor during their back end registration for the first time.
+
+oAuth2.0 process:
+
+There are different types of grant_type like authorisation_code, client_credentials, password_credentials etc.
+
+To find the needed details or query params, refer contract details given by dev, if something is missing and to know which one it is, go to postman, try creating a request, under authorisation, select type as oAuth2.0, in right side, change grant_type to given options and see the query params it displaying based on option selected.
+
+Authorisation_code grant type:
+If human has to given credentials of google to view another application, it requires authorisation_code grant type
+
+1.Authorisation:
+Below is the sample url created by rahulshetty. 
+URL can be constructed using below contract details(https://accounts.google.com/o/oauth2/v2/auth/<other contract query params details>. Now in that URL, Human has to give google credentials. 
+On clicking login, details goes to authorisation server and it returns a code within URL itself.
+
+2. Access token:
+URL can be constructed using below contract details(https://www.googleapis.com/oauth2/v4/token/<other contract query params details>.
+rahulshettyacademy.com(or trip advisor) sends that code to resource server of google. And the server will return access token.
+
+3. Use Access Token to hit api and get details:
+URL can be constructed using below contract details(https://rahulshettyacademy.com/getCourse.php/<other contract query params details>. 
+Now rahulshettyacademy.com(or trip advisor) can access the access token to get user details like username, password etc.
+
+OAuth 2.0 Contract Details:
+
+GrantType	Authorization code
+redirect URL/Callback URL	https://rahulshettyacademy.com/getCourse.php 
+Authorization server url	https://accounts.google.com/o/oauth2/v2/auth
+Access token url			https://www.googleapis.com/oauth2/v4/token
+Client ID				692183103107-p0m7ent2hk7suguv4vq22hjcfhcr43pj.apps.googleusercontent.com //created by rahulshetty.com during oauth first time registration with google.
+Client Secret			erZOWM9g3UtwNRj340YYaK_W //secret id which is not public. It is used during step-2.
+Scope					https://www.googleapis.com/auth/userinfo.email //scope is the details required by rahulshetty.com from google. like username, email.
+State					Any random string //this is a dummy data sent in step-1 and received during step-2. It confirms if there is no hacking or middle man and google returns the same dummy data we sent.
+How to pass oauth in request	Headers
+
+
+Mandatory fields for GetAuthorization Code Request ;
+End Point : Authorization server url
+Query Params:Scope, Auth_url, client_id, response_type (code), redirect_uri
+
+output : Code
+
+
+Mandatory fields for GetAccessToken Request :
+End point : Access token url
+Query Params :Code, client_id, client_secret, redirect_uri, grant_type (authorisation)
+Output : Access token
+
+urlEncodingEnabled(false) -> if code or access token as special characters like #$@ etc, if directly used, it will be assigned to some integers and the codeor token will not be valid. In such case, urlEncodingEnabled(false) is set so that, the special characters will be taken as it is instead of encoding it to integers. by default it is true.
+
+************************
+
+client_credentials grant type:
+If the interaction is just between two applications where no user authorisation is required, in such case client_credentials are used. 
+
+eg: in spice_jet, after successful flight booking, in confirmation page, hotel booking with offers based on your flight rate is displayed. It varies among users based on their flight booking cost. There is an interaction between flight and hotel with no consent from user, displays hotel details. So here, authorisation is not required, hence direct client details are provided. 
+Meaning, second and third step of authorisation_code alone is performed.
+
+
+So, in client credentials, only access token is received based on client id and secret, and get details api is hit. 
+*************************
+
+Password_credentials grant type:
+it is similar to client_crendentials, but user-name and password is needed along with client id and secret.
+
+
+
+• Good at identifying, developing, using strengths of team members and worked closely with team.
+• Provided resource and estimation in tier levels to clients during planning phase.
+• Report daily/weekly/monthly and release wise status to the clients in the form of dashboards,
+documentations and presentations.
+• Conducted Internal Audit and provided feedback.
+• Conducted sessions on American HealthCare Management and support operations.• Good at identifying, developing, using strengths of team members and worked closely with team. • Provided resource and estimation in tier levels to clients during planning phase. • Report daily/weekly/monthly and release wise status to the clients in the form of dashboards, documentations and presentations. • Conducted Internal Audit and provided feedback. • Conducted sessions on American HealthCare Management and support operations.
+Skills: Management · Team Building · Microsoft PowerPoint · Document Drafting · Presentation Skills · Manual Testing
+
+**********************************************
+
+POJO (Plain Old Java Object):
+
+POJO is the constructed form of JSON using java methods.
+eg: 
+{
+"message" : "hello"
+}
+
+POJO format would be:
+
+public class myJson(){
+private String message;
+
+public void setMessage(String Message){
+this.message = message;
+}
+
+public String getMessage(){
+return message;
+}
+}
+
+myJson objmyJson = new myJson();
+objmyJson.setMessage();
+
+
+To get pojo format automatically via eclipse:
+just create a class, declare variables like private String message or private List<WebAutomation> webAutomation. Select it and type alt+shift+s, click generate getter and setter
+
+Serialisation: 
+or set method: giving json payload as input.
+
+Deserialisation:
+or get method: Getting values from response body, assigning to pojo and getting values in readable format.
+
+POJO vs JSONpath:
+If the response body keeps varying, JSONpath is better to get values.
+If the JSON fields are never changing, go with POJO for better readability.
+
+POJO_Demo objPojoClass = given().relaxedHTTPSValidation().queryParam("access_token", strAccessToken).expect().defaultParser(Parser.JSON)
+		.when().get("getCourse.php")
+		.then().log().all().extract().response().as(POJO_Demo.class);
+
+
+
+to see that POJO_Demo.class, refere eclipse.
+public Courses getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Courses courses) {
+		this.courses = courses;
+	}
+
+
+
+
+{ "instructor": "RahulShetty", "url": "rahulshettycademy.com", "services": "projectSupport", "expertise": "Automation",
+"courses": { 
+"webAutomation":
+ [
+ { "courseTitle": "Selenium Webdriver Java", "price": "50" },
+ { "courseTitle": "Cypress",
+"price": "40"
+},
+{
+"courseTitle": "Protractor",
+"price": "40"
+}
+],
+"api": [
+{
+"courseTitle": "Rest Assured Automation using Java",
+"price": "50"
+},
+{
+"courseTitle": "SoapUI Webservices testing",
+"price": "40"
+}
+],
+"mobile": [
+{
+"courseTitle": "Appium-Mobile Automation using Java",
+"price": "50"
+}
+]
+},
+"linkedIn": "https://www.linkedin.com/in/rahul-shetty-trainer/"
+}
+
+
+
+Serialisation:
+
+To create json body using pojo and give as input in given().body(). see the below example:
+
+
+Json for which pojo creation done below is:
+
+{
+  "location": {
+    "lat": -38.383494,
+    "lng": 33.427362
+  },
+  "accuracy": 50,
+  "name": "Frontline house",
+  "phone_number": "(+91) 983 893 3937",
+  "address": "29, side layout, cohen 09",
+  "types": [
+    "shoe park",
+    "shop"
+  ],
+  "website": "http://google.com",
+  "language": "French-IN"
+}
+ 
+
+
+
+pojo:
+import java.util.List;
+
+public class Pojo_Json_Serialisation {
+	
+	private Location location;
+	private int accuracy;
+	private String name;
+	private String phone_number;
+	private String address;
+	private List<String> types;
+	private String website;
+	private String language;
+	
+	public Location getLocation() {
+		return location;
+	}
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+	public int getAccuracy() {
+		return accuracy;
+	}
+	public void setAccuracy(int accuracy) {
+		this.accuracy = accuracy;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPhone_number() {
+		return phone_number;
+	}
+	public void setPhone_number(String phone_number) {
+		this.phone_number = phone_number;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public List<String> getTypes() {
+		return types;
+	}
+	public void setTypes(List<String> types) {
+		this.types = types;
+	}
+	public String getWebsite() {
+		return website;
+	}
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+	
+				
+}
+
+
+
+@Test
+	public void pojoSerialisation() {
+		baseURI = "https://rahulshettyacademy.com";
+		Pojo_Json_Serialisation objConvertToJson = new Pojo_Json_Serialisation();
+		objConvertToJson.setAccuracy(50);
+		objConvertToJson.setAddress("100, Mission Parkway");
+		objConvertToJson.setLanguage("Tamil");
+		objConvertToJson.setName("Sanjeev Krishna");
+		objConvertToJson.setPhone_number("5092345895");
+		objConvertToJson.setWebsite("https://krishnacademy.com");
+		List<String> types = new ArrayList<String>();
+		types.add("shoe");
+		types.add("socks");		
+		objConvertToJson.setTypes(types);
+		Location objLocation = new Location();
+		objLocation.setLat(-34.35436);
+		objLocation.setLng(56.09874);
+		objConvertToJson.setLocation(objLocation);
+		given().relaxedHTTPSValidation().header("Content-Type", "application/json").queryParam("key", "qaclick123").body(objConvertToJson).log().all().
+		when().post("/maps/api/place/add/json").
+		then().assertThat().statusCode(200).log().all().extract().response().jsonPath();
+		
+	}
+
+Note: To check if we have created pojo correctly is, log all the input in given() statement as above.
+now, we get input json in eclipse console, copy it and paste in online editor. It should give the exact json.

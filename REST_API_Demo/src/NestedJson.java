@@ -43,5 +43,6 @@ public class NestedJson {
 		
 		JsonPath hi = new JsonPath(objBodyContent.hey());
 		System.out.println(hi.getString("fields.comment.comments.body"));
+		
 	}
 }

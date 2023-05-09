@@ -1,3 +1,4 @@
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.restassured.filter.session.SessionFilter;
@@ -16,13 +17,13 @@ public class JiraAddComment {
 	}
 
 	public SessionFilter objSessionFilter;
-	public String strInputComment = "my second input";
+	public String strInputComment = "Finally I learnt this and now asserting";
 	public String strCommentID;
 
 	@Test
 	public void createSession() {
 		objSessionFilter = new SessionFilter();
-		given().header("Content-Type", "application/json")
+		given().relaxedHTTPSValidation().header("Content-Type", "application/json")
 				.body("{ \"username\": \"janani\", \"password\": \"SanjeevKrish@01\" }").filter(objSessionFilter).when()
 				.post("rest/auth/1/session").then().log().body();
 
@@ -30,10 +31,10 @@ public class JiraAddComment {
 
 //	note in below test case, key value can directly given in post() or via pathParam as well.
 //adding comment and retrieving comment ID to check in next case if comment added successfully.
-	@Test(priority = 1)
+	@Test(priority = 1, enabled=true)
 	public void addComment() {
 
-		JsonPath objJsonPath = given().pathParam("id", "10206").log().all().header("Content-Type", "application/json")
+		JsonPath objJsonPath = given().pathParam("id", "10205").log().all().header("Content-Type", "application/json")
 				.body("{\r\n" + "    \"body\": \"" + strInputComment + "\",\r\n" + "    \"visibility\": {\r\n"
 						+ "        \"type\": \"role\",\r\n" + "        \"value\": \"Administrators\"\r\n" + "    }\r\n"
 						+ "}")
@@ -49,10 +50,12 @@ public class JiraAddComment {
 //		JsonPath objJsonPath = given().filter(objSessionFilter).when().get("rest/api/2/issue/10206").then().extract()
 //				.response().jsonPath();
 		//note in below queryParam is used to limit the display of json only to comment instead of whole body. this can be done without using query as well, by directly collecting ouput in jsonpath and filtering what we need.
-		JsonPath objJsonPath = given().filter(objSessionFilter).pathParam("id", "10206").queryParam("fields", "comment").when().get("rest/api/2/issue/{id}").then().extract().response().jsonPath();
-		String[] strID = objJsonPath.get("fields.comment.comments.id");
-		List<String> mylist = Arrays.asList(strID);
-		List check = mylist.stream().filter(s->s.equals(strCommentID)).collect(Collectors.toList(
-//		System.out.println(objJsonPath.getString("fields.comment.comments.body"));
+		JsonPath objJsonPath = given().filter(objSessionFilter).pathParam("id", "10205").queryParam("fields", "comment").when().get("rest/api/2/issue/{id}").then().extract().response().jsonPath();
+		List<String> mylist = objJsonPath.get("fields.comment.comments.id");
+		int intIndexOfCommentID = mylist.indexOf(strCommentID);
+		String strOutputComment = objJsonPath.getString("fields.comment.comments["+intIndexOfCommentID+"].body");
+		System.out.println(objJsonPath.getString("fields.comment.comments["+intIndexOfCommentID+"].body"));
+		Assert.assertEquals(strOutputComment, strInputComment);
+		
 	}
 }

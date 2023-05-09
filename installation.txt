@@ -6,7 +6,14 @@ java
 dependancies in pom.xml (remove <scope> tag so that, dependancies work)
 rest-assured
 testng
-hamcrest
+hamcrest //for assertion in side then() 
+
+For POJO:
+jackson databind
+jackson annotation
+jackson core
+//annotation and core will be under databind in separate table in mvn repository.
+gson
 
 jira:
 Google -> jira software center - atlassian - > download archive -> click- > give next next, it gets auto launched https://localhost:8080
