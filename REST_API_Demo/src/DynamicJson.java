@@ -1,3 +1,4 @@
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -9,6 +10,7 @@ import static org.hamcrest.Matchers.*;
 
 public class DynamicJson {
 	BodyContent objBodyContent = new BodyContent();
+	
 	@Test(dataProvider="sendData")
 	public void dynamicJson(String isbn, String aisle) {
 		RestAssured.baseURI = "http://216.10.245.166";

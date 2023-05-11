@@ -459,16 +459,6 @@ So, in client credentials, only access token is received based on client id and 
 Password_credentials grant type:
 it is similar to client_crendentials, but user-name and password is needed along with client id and secret.
 
-
-
-• Good at identifying, developing, using strengths of team members and worked closely with team.
-• Provided resource and estimation in tier levels to clients during planning phase.
-• Report daily/weekly/monthly and release wise status to the clients in the form of dashboards,
-documentations and presentations.
-• Conducted Internal Audit and provided feedback.
-• Conducted sessions on American HealthCare Management and support operations.• Good at identifying, developing, using strengths of team members and worked closely with team. • Provided resource and estimation in tier levels to clients during planning phase. • Report daily/weekly/monthly and release wise status to the clients in the form of dashboards, documentations and presentations. • Conducted Internal Audit and provided feedback. • Conducted sessions on American HealthCare Management and support operations.
-Skills: Management · Team Building · Microsoft PowerPoint · Document Drafting · Presentation Skills · Manual Testing
-
 **********************************************
 
 POJO (Plain Old Java Object):
@@ -684,3 +674,146 @@ public class Pojo_Json_Serialisation {
 
 Note: To check if we have created pojo correctly is, log all the input in given() statement as above.
 now, we get input json in eclipse console, copy it and paste in online editor. It should give the exact json.
+
+
+***********************************************
+Spec Builders:
+
+It is to create one utility for frequently used steps like, setting baseuri, content type, header, status code verification etc with the help of
+request spec and response spec builders. Just create new object with it, it will show the return type in words as request specification, use it to write return type. 
+
+Just like action class, this should also ends with build().
+
+Now above will go in separate file during framework creation.
+
+Next is to use, spec(req or res obj) to use that utility.
+
+@Test
+	public void specBuilder() {
+		RequestSpecification objReqSpecs = new RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com")
+				.setContentType(ContentType.JSON).addHeader("key", "qaclick123").build();
+		ResponseSpecification objResSpecs = new ResponseSpecBuilder().expectContentType(ContentType.JSON)
+				.expectStatusCode(200).build();
+
+		RequestSpecification objGiven = given().spec(objReqSpecs).body(objConvertToJson);
+		JsonPath objJsonPath = objGiven.when().post("/maps/api/place/add/json").then().spec(objResSpecs).extract()
+				.response().jsonPath();
+}
+
+
+******************************************************
+Creating contract details from network console in browser:
+Dev may ask to get contract details from network in browser itself. In such case follow below steps:
+
+First go to https://rahulshettyacademy.com/client and create your account.
+Now login and Open network console where, under name: login(), api contract details are given like below
+Request URL:
+https://rahulshettyacademy.com/api/ecom/auth/login
+Request Method:
+POST
+Status Code:
+200 OK
+Remote Address:
+3.110.88.201:443
+Referrer Policy:
+strict-origin-when-cross-orig
+
+ Payload tab has json body input details.
+{"userEmail":"jansree90@gmail.com","userPassword":"SanjeevKrish@01"}
+
+Now, Response in console will be:
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDViMTA1YjU2OGMzZTlmYjE2ODM1NWUiLCJ1c2VyRW1haWwiOiJqYW5zcmVlOTBAZ21haWwuY29tIiwidXNlck1vYmlsZSI6MTIzNDU1Njc4MCwidXNlclJvbGUiOiJjdXN0b21lciIsImlhdCI6MTY4MzY4OTU4NiwiZXhwIjoxNzE1MjQ3MTg2fQ.tgVWZOz4_Aj6S12Ppxd_qeS9U9sbnc63XrCF1RV9LRM",
+    "userId": "645b105b568c3e9fb168355e",
+    "message": "Login Successfully"
+}
+
+Note that, this token will be labelled as "authorisation" and used for every action by that useremail. Only through this token/authorisation, shopping site will know either its janani adding products to cart or dinesh adding products to cart. Also, userID can be used for some actions based on contract details designed by dev.
+
+Creation of product:
+
+Create and delete product contract details should be given by dev as it is not done by direct users but other whole salers and it cannot be obtained in network console.
+
+Note, form-data is given instead of json.
+Just copy this, do bulk edit in postman and paste the details. Now, it will be in key:value pair.
+Also, product image is from local, form-data can only access local files. But JSON can't do this.
+To enable local access to files, go to postman settings -> general -> enable "Allow reading files outside working directory". Otherwise, paste the image in "C:\Users\jansr\Postman\files" and access directly.
+In header, Authorisation is important to get placed. Its important for all type of actions made by the logged in user.
+
+
+End point –https://rahulshettyacademy.com/api/ecom/product/add-product
+
+Http Method - POST
+Form Data -
+
+productName:qwerty
+productAddedBy:{{userId}}
+productCategory:fashion
+productSubCategory:shirts
+productPrice:11500
+productDescription:Addias Originals
+productFor:women
+productImage: {{localfile}}
+
+
+Place-order:
+below contract details are obtained in rahulshettyacademy.com/client network console and on selecting order and clicking on place order.
+
+https://rahulshettyacademy.com/api/ecom/order/create-order
+use same authorisation in header.
+{
+    "orders": [
+        {
+            "country": "India",
+            "productOrderedId": "645bfbba568c3e9fb1690b75"
+        }
+    ]
+}
+
+here, product order id is created while creating that product.
+
+output will be:
+{
+    "orders": [
+        "645c0384568c3e9fb1690e8b"
+    ],
+    "productOrderId": [
+        "645bfbba568c3e9fb1690b75"
+    ],
+    "message": "Order Placed Successfully"
+}
+
+Get Order details:
+
+https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=645c0f80568c3e9fb169123b
+and authorisation.
+
+Delete Product:
+
+https://rahulshettyacademy.com/api/ecom/product/delete-product/{{productId}}
+and authorisation.
+
+
+
+
+package rahulshettyShopping;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+import org.testng.annotations.Test;
+
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+
+public class E2E_Shopping {
+
+	@Test
+	public void login() {
+		
+		RequestSpecification objReqSpec = new RequestSpecBuilder().setRelaxedHTTPSValidation().setBaseUri("https://rahulshettyacademy.com").setContentType(ContentType.JSON).build();
+		
+	}
+
+}
