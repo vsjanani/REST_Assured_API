@@ -28,7 +28,7 @@ public class OAuth_Pojo_Deserialisation {
 		// hence strURLGetCode has to be given manually in browser to get code. Note
 		// code is then sent to get access_token. using access_token we will get course
 		// details from rahulshettyacademy.com
-		String strURLwithCode = "https://rahulshettyacademy.com/getCourse.php?state=hello&code=4%2F0AbUR2VMu1mHlo5GXz-u_DV7DX19x73OBR6jqR6fCgTdHeh1CVQuQlmk1T19Q6sTkEqqgyA&scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none";
+		String strURLwithCode = "https://rahulshettyacademy.com/getCourse.php?state=hello&code=4%2F0AbUR2VML4EMJsBpSf9I1Nnz8H4zb1hSzzIHLUkn1hGHsd8dCBfSIgLxRFvdVoZY1rEKLkA&scope=email+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none";
 		String strCode = StringUtils.substringBetween(strURLwithCode, "code=", "&scope");
 		System.out.println(strCode);
 

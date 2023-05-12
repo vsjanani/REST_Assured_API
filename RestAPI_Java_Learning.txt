@@ -463,8 +463,8 @@ it is similar to client_crendentials, but user-name and password is needed along
 
 POJO (Plain Old Java Object):
 
-POJO is the constructed form of JSON using java methods.
-eg: 
+POJO is the constructed form of JSON using java methods. Always note that whatever json has key name, the same should be declared in pojo class.
+for example: 
 {
 "message" : "hello"
 }
@@ -472,7 +472,7 @@ eg:
 POJO format would be:
 
 public class myJson(){
-private String message;
+private String message; // here same message is defined. if a variable names are defined something else, "something went wrong" error will be thrown.
 
 public void setMessage(String Message){
 this.message = message;
@@ -817,3 +817,34 @@ public class E2E_Shopping {
 	}
 
 }
+
+
+
+
+Json creation using pojo:
+
+JSON:
+{
+    "orders": [
+        {
+            "country": "india",
+            "productOrderedId": "645d7903568c3e9fb16a08a7"
+        }
+    ]
+}
+
+POJO will be like below:
+
+		PlaceOrder objPlaceOrder = new PlaceOrder();
+		objPlaceOrder.setCountry("india");
+		objPlaceOrder.setProductOrderedId(strProductId);
+
+		List<PlaceOrder> lstPlaceOrder = new ArrayList<PlaceOrder>();
+		lstPlaceOrder.add(objPlaceOrder);
+
+		ListPlaceOrders objLstPlaceOrders = new ListPlaceOrders();
+		objLstPlaceOrders.setOrders(lstPlaceOrder);
+
+
+
+given().spec(objReqSpec).body(objLstPlaceOrders);

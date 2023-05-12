@@ -5,7 +5,7 @@
     <classes>
       <class name="rahulshettyShopping.testCases.EndToEndShopping">
         <methods>
-          <include name="createProduct"/>
+          <include name="deleteProduct"/>
         </methods>
       </class> <!-- rahulshettyShopping.testCases.EndToEndShopping -->
     </classes>
