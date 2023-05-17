@@ -1,19 +1,28 @@
 install below softwares:
 eclipse
 java
+cucumber plugin in eclipse
 
 
-dependancies in pom.xml (remove <scope> tag so that, dependancies work)
+dependancies in pom.xml (remove <scope> tag inside <dependancy> if present so that, dependancies work)
 rest-assured
 testng
 hamcrest //for assertion in side then() 
+commons io
+commons lang -> to use like StringUtils.stringbetween two strings etc.
+cucumber-java
+cucumber-junit
 
-For POJO:
+for POJO:
 jackson databind
 jackson annotation
 jackson core
 //annotation and core will be under databind in separate table in mvn repository.
 gson
+
+
+**********************************************
+
 
 jira:
 Google -> jira software center - atlassian - > download archive -> click- > give next next, it gets auto launched https://localhost:8080
@@ -32,3 +41,12 @@ Navigate to the sub-directory where the batch file "Start-jira.bat" is located, 
 go to command terminal C:\Users\jansr\Atlassian\Jira\bin
 
 Once in that sub-directory type Start-jira.bat /fg and press ENTER, to load your local host 8080
+
+Cucumber:
+right click on project -> configure -> convert to cucumber project.
+Benefit of doing this: On click control+space on any feature steps, it directs to respective step definition.
+If tidy gherkin is deprecated or not allowed in project, just create feature and runner file, run the junit, console will display the step definition. just copy and paste.
+
+To run using Junit without any issues:
+
+Right click on project in eclipse->properties->java build path-> check if a separate maven folder is present. By default it wont. but if so delete it as rahulshetty did. Else, two junits may create issues.

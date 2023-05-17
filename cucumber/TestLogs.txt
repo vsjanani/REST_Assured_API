@@ -1,0 +1,144 @@
+Request method:	POST
+Request URI:	https://rahulshettyacademy.com/maps/api/place/add/json
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		key=qaclick123
+				Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:
+{
+    "location": {
+        "lat": -38.383497,
+        "lng": 26.89857
+    },
+    "accuracy": 60,
+    "name": "haraharamahadeva",
+    "phone_number": "8220734564",
+    "address": "50, side layout, cohen 09",
+    "types": [
+        "glouse",
+        "jacket"
+    ],
+    "website": "https://sanjeevKrish.com",
+    "language": "malayalam"
+}
+HTTP/1.1 200 OK
+Date: Wed, 17 May 2023 06:55:59 GMT
+Server: Apache/2.4.41 (Ubuntu)
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: POST
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+Content-Length: 194
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: application/json;charset=UTF-8
+
+{
+    "status": "OK",
+    "place_id": "099e1f2aafe02e52cda2edaee5f4fc40",
+    "scope": "APP",
+    "reference": "7e76eae31ab5a1beb45be0df1f814e8d7e76eae31ab5a1beb45be0df1f814e8d",
+    "id": "7e76eae31ab5a1beb45be0df1f814e8d"
+}
+Request method:	POST
+Request URI:	https://rahulshettyacademy.com/maps/api/place/add/json
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		key=qaclick123
+				Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:
+{
+    "location": {
+        "lat": -38.383497,
+        "lng": 26.89857
+    },
+    "accuracy": 60,
+    "name": "jishnu",
+    "phone_number": "8220734564",
+    "address": "hyat",
+    "types": [
+        "glouse",
+        "jacket"
+    ],
+    "website": "https://sanjeevKrish.com",
+    "language": "tamil"
+}
+HTTP/1.1 200 OK
+Date: Wed, 17 May 2023 06:56:01 GMT
+Server: Apache/2.4.41 (Ubuntu)
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: POST
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+Content-Length: 194
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: application/json;charset=UTF-8
+
+{
+    "status": "OK",
+    "place_id": "9bde5a0d5eb71a7ce0e5be0d8849be4a",
+    "scope": "APP",
+    "reference": "25e1d0d0956339cf65125e65ce6b5cd825e1d0d0956339cf65125e65ce6b5cd8",
+    "id": "25e1d0d0956339cf65125e65ce6b5cd8"
+}
+Request method:	POST
+Request URI:	https://rahulshettyacademy.com/maps/api/place/add/json
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		key=qaclick123
+				Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:
+{
+    "location": {
+        "lat": -38.383497,
+        "lng": 26.89857
+    },
+    "accuracy": 60,
+    "name": "jakki",
+    "phone_number": "8220734564",
+    "address": "dubai",
+    "types": [
+        "glouse",
+        "jacket"
+    ],
+    "website": "https://sanjeevKrish.com",
+    "language": "kannada"
+}
+HTTP/1.1 200 OK
+Date: Wed, 17 May 2023 06:56:02 GMT
+Server: Apache/2.4.41 (Ubuntu)
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: POST
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+Content-Length: 194
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: application/json;charset=UTF-8
+
+{
+    "status": "OK",
+    "place_id": "0a4f54a480c1431fee71f38c46fb6840",
+    "scope": "APP",
+    "reference": "ddfaadf374c54985970044a3ef95c1b6ddfaadf374c54985970044a3ef95c1b6",
+    "id": "ddfaadf374c54985970044a3ef95c1b6"
+}

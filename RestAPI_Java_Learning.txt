@@ -848,3 +848,127 @@ POJO will be like below:
 
 
 given().spec(objReqSpec).body(objLstPlaceOrders);
+
+*****************************
+
+Cucumber:
+
+To maintain code consistency, dynamic data should be used. 
+
+for eg:
+
+scenario: 1
+then code diplays "true"
+
+scenario: 2
+then code displays "false"
+
+Note: within quotes is meant to dynamic data and gherkin tidy interpret it automatically or we can just execute the runner and get the gherkin step definition in console itself.
+
+sample feature file:
+Feature: Google Map API HTTP request
+Scenario: Validate if location is added using Google add API.
+Given JSON Payload and Header Key
+When User POST "maps/api/place/add/json" resource 
+Then Response Status code should be 200
+And "scope" in response body should be "APP"
+And "status" in response body should be "OK"
+
+Here, pojo will have all datasetup.
+
+now, if it is not quotes, two step definition for two scenarios needed.
+Since we made it dynamic, only passing value differs, and one step definition is enough.
+
+below is the console way of giving missing step def.
+
+io.cucumber.junit.UndefinedStepException: The step '"hello" on head' and 2 other step(s) are undefined.
+You can implement these steps using the snippet(s) below:
+
+@When("{string} on head")
+public void on_head(String string) {
+    // Write code here that turns the phrase above into concrete actions
+    throw new io.cucumber.java.PendingException();
+}
+@Then("He faints {string}")
+public void he_faints(String string) {
+    // Write code here that turns the phrase above into concrete actions
+    throw new io.cucumber.java.PendingException();
+}
+
+
+Cucumber framework for google API:
+
+Lesson-1: glue can work if there is only on stepdefinition file. but feature can be directly mentioned under "features" in test runner.
+
+place_id e1cddc0716ccb181d1a0c889c4a89f48, 31d32565ca014342700b45d201090e28, a014b81ef7b4a0be678ac3ff179f6883, 193b2d161128c461b583e8244e12da80
+7ef69d79f092cf6e6e47896be49ba555
+224c9a5f791781118f170ecba014473c
+90237977c3358a37985726ea9e0c1a88
+90237977c3358a37985726ea9e0c1a88
+c6ab08823ce97c3339ab9e7f798da498
+c6ab08823ce97c3339ab9e7f798da498
+cbbb4ae6dc2ce1bc6678691b2367ba94
+cbbb4ae6dc2ce1bc6678691b2367ba94
+
+
+Framework Structure:
+
+Feature, step defintions (test runner.java links both)
+
+Step Definition extends utilities and payload files.
+
+Payload files creates object of pojo files.
+
+Dynamic data driven from feature file:
+
+Scenario Outline: needs to be used instead of Scenario if we gonna have Examples(datasetup) like below
+
+Scenario Outline: Validate if location is added using Google add API using dynamic data.
+Given JSON Payload and Header Key with "<name>","<address>","<language>"
+When User POST "maps/api/place/add/json" resource 
+Then Response Status code should be 200
+And "scope" in response body should be "APP"
+And "status" in response body should be "OK"
+
+Examples:
+|name|address|language|
+|vishnu|hyat|tamil|
+
+Here, we give dynamic input via feature file.
+
+in below code, only name, address and language are dynamic while sending as json, hence only those details are passed as params.
+
+given() will be:
+@Given("JSON Payload and Header Key with {string},{string},{string}")
+	public void json_payload_and_header_key_with(String strName, String strAddress, String strLanguage)
+			throws IOException {
+
+		BodyForAddAPI objPayLoadwithParams = new BodyForAddAPI();
+		objGivenSpec = given().spec(requestSpec())
+				.body(objPayLoadwithParams.bodyForAddAPIwithParams(strName, strAddress, strLanguage));
+	}
+
+public AddSerialisation bodyForAddAPIwithParams(String strName, String strAddress, String strLanguage) {
+		AddSerialisation objAddSerialisationwithParams = new AddSerialisation();
+		Location objLocation = new Location();
+		List<String> myList = new ArrayList<String>();
+		myList.add("glouse");
+		myList.add("jacket");
+		objLocation.setLat(-38.383497);
+		objLocation.setLng(26.89857);
+
+		objAddSerialisationwithParams.setName(strName);
+		objAddSerialisationwithParams.setLanguage(strLanguage);
+		objAddSerialisationwithParams.setAddress(strAddress);
+		objAddSerialisationwithParams.setPhone_number("8220734564");
+		objAddSerialisationwithParams.setWebsite("https://sanjeevKrish.com");
+
+
+
+
+
+
+
+
+
+
