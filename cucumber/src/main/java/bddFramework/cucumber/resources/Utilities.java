@@ -33,11 +33,10 @@ public class Utilities {
 		objFOS = new FileOutputStream("TestLogs.txt", true);
 		PrintStream objPrintStream = new PrintStream(objFOS);
 		objReqSpec = new RequestSpecBuilder().setRelaxedHTTPSValidation().setBaseUri(globalData("baseURI"))
-				.setContentType(ContentType.JSON).addHeader("key", "qaclick123")
+				.setContentType(ContentType.JSON).addQueryParam("key", "qaclick123")
 				.addFilter(RequestLoggingFilter.logRequestTo(objPrintStream))
 				.addFilter(ResponseLoggingFilter.logResponseTo(objPrintStream))
 				.addFilter(ErrorLoggingFilter.logErrorsTo(objPrintStream)).build();
-		System.out.println("dinesh barking");
 		return objReqSpec;
 //		}
 //		return objReqSpec;
@@ -52,9 +51,9 @@ public class Utilities {
 		return objProperties.getProperty(strGlobalData);
 	}
 
-	public JsonPath respToJsonPath(Response objWhenResponse) {
-		JsonPath objJsonPath = objWhenResponse.then().extract().response().jsonPath();
-		return objJsonPath;
+	public String respToJsonPath(Response objWhenResponse, String strExptdKey) {
+		String strActualValue = objWhenResponse.then().extract().response().jsonPath().getString(strExptdKey);
+		return strActualValue;
 	}
 
 }

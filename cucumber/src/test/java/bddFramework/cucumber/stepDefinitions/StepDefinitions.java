@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import bddFramework.cucumber.PayLoad.BodyForAddAPI;
+import bddFramework.cucumber.resources.APIresources;
 import bddFramework.cucumber.resources.Utilities;
 
 import static io.restassured.RestAssured.*;
@@ -23,13 +24,13 @@ public class StepDefinitions extends Utilities {
 	RequestSpecification objGivenSpec;
 	JsonPath objJsonPath;
 	Response objWhenResp;
+	static String strActualPlaceIDValue;
+	BodyForAddAPI objPayLoad = new BodyForAddAPI();
 
-	@Given("JSON Payload and Header Key")
-	public void json_payload_and_header_key() throws IOException {
-		System.out.println(globalData("baseURI"));
-		BodyForAddAPI objPayLoad = new BodyForAddAPI();
+	@Given("{string} and Header Key")
+	public void and_header_key(String payload) throws IOException {
+		System.out.println(globalData("baseURI"));		
 		objGivenSpec = given().spec(requestSpec()).body(objPayLoad.bodyForAddAPI());
-		
 
 	}
 
@@ -37,13 +38,22 @@ public class StepDefinitions extends Utilities {
 	public void json_payload_and_header_key_with(String strName, String strAddress, String strLanguage)
 			throws IOException {
 
-		BodyForAddAPI objPayLoadwithParams = new BodyForAddAPI();
-		objGivenSpec = given().spec(requestSpec()).body(objPayLoadwithParams.bodyForAddAPIwithParams(strName, strAddress, strLanguage));
+		objGivenSpec = given().spec(requestSpec())
+				.body(objPayLoad.bodyForAddAPIwithParams(strName, strAddress, strLanguage));
 	}
 
-	@When("User POST {string} resource")
-	public void user_post_resource(String strResource) {
-		objWhenResp = objGivenSpec.when().post(strResource);
+	@When("User hits {string} resource using http method {string}")
+	public void user_hits_resource_using_http_method(String strAPIResource, String strHTTPMethod) {
+
+		APIresources mystr = APIresources.valueOf(strAPIResource);
+		String strAPIResourceToSend = mystr.getAPIResource();
+		if (strHTTPMethod.equalsIgnoreCase("POST")) {
+			objWhenResp = objGivenSpec.when().post(strAPIResourceToSend);
+		} else if (strHTTPMethod.equalsIgnoreCase("GET")) {
+			objWhenResp = objGivenSpec.when().get(strAPIResourceToSend);
+		} else if (strHTTPMethod.equalsIgnoreCase("DELETE")) {
+			objWhenResp = objGivenSpec.when().delete(strAPIResourceToSend);
+		}
 
 	}
 
@@ -55,9 +65,22 @@ public class StepDefinitions extends Utilities {
 
 	@Then("{string} in response body should be {string}")
 	public void in_response_body_should_be(String strExptdKey, String strExptdValue) {
-		objJsonPath = respToJsonPath(objWhenResp);
-		System.out.println(objJsonPath.getString("place_id"));
-		Assert.assertEquals(strExptdValue, objJsonPath.getString(strExptdKey));
+		String strActualValue = respToJsonPath(objWhenResp, strExptdKey);
+		Assert.assertEquals(strExptdValue, strActualValue);
 	}
+
+	@Then("on hitting {string} using http method {string}, already created {string} should carry {string} in {string} field")
+	public void on_hitting_using_http_method_already_created_should_carry_in_field(String strAPIResource, String strHTTPMethod,
+			String strPlaceIDKey, String strExptdName, String strNameKey) throws IOException {
+		strActualPlaceIDValue = respToJsonPath(objWhenResp, strPlaceIDKey);
+		objGivenSpec = given().spec(requestSpec()).queryParam(strPlaceIDKey, strActualPlaceIDValue);
+		user_hits_resource_using_http_method(strAPIResource, strHTTPMethod);
+		String strActualName = respToJsonPath(objWhenResp, strNameKey);
+		System.out.println(strActualName + " actual name");
+		Assert.assertEquals(strExptdName, strActualName);
+
+	}
+	
+	
 
 }

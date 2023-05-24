@@ -32,8 +32,8 @@ public class Basics {
 				.body("msg", equalTo("Address successfully updated"));
 		//GET request
 		JsonPath objGetJsonPath = given().queryParam("key", "qaclick123").queryParam("place_id", place_id)
-				.when().put("maps/api/place/get/json")
-				.then().log().body().assertThat().statusCode(200).extract().jsonPath();
+				.when().log().all().get("maps/api/place/get/json")
+				.then().log().all().assertThat().statusCode(200).extract().jsonPath();
 		System.out.println(objGetJsonPath.getString("address"));
 		Assert.assertEquals(objGetJsonPath.getString("address"), strUpdatedAddress);
 		

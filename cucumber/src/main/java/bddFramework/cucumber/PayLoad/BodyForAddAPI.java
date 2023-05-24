@@ -20,7 +20,7 @@ public class BodyForAddAPI {
 		objAddSerialisation.setLocation(objLocation);
 		objAddSerialisation.setTypes(myList);
 		objAddSerialisation.setAccuracy(60);
-		objAddSerialisation.setName("haraharamahadeva");
+		objAddSerialisation.setName("jingliii");
 		objAddSerialisation.setLanguage("malayalam");
 		objAddSerialisation.setAddress("50, side layout, cohen 09");
 		objAddSerialisation.setPhone_number("8220734564");
@@ -28,7 +28,7 @@ public class BodyForAddAPI {
 
 		return objAddSerialisation;
 	}
-	
+
 	public AddSerialisation bodyForAddAPIwithParams(String strName, String strAddress, String strLanguage) {
 		AddSerialisation objAddSerialisationwithParams = new AddSerialisation();
 		Location objLocation = new Location();
@@ -49,6 +49,5 @@ public class BodyForAddAPI {
 
 		return objAddSerialisationwithParams;
 	}
-	
 
 }

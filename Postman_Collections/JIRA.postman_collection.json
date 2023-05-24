@@ -1,0 +1,222 @@
+{
+	"info": {
+		"_postman_id": "7b870aa0-62ec-471c-8cd5-01618b6504f1",
+		"name": "JIRA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"myuser\", \"password\": \"mypassword\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/auth/1/session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"auth",
+						"1",
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create_Issue",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID=10A1DBE75D49AFF47E8A273FF8121404",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n       \"project\":\r\n       {\r\n          \"key\": \"RESTAPI\"\r\n       },\r\n       \"issuetype\": {\r\n          \"name\": \"Bug\"\r\n       }\r\n   }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/api/2/issue?os_authType=cookie=10A1DBE75D49AFF47E8A273FF8121404",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue"
+					],
+					"query": [
+						{
+							"key": "os_authType",
+							"value": "cookie=10A1DBE75D49AFF47E8A273FF8121404"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add_Comment",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID=10A1DBE75D49AFF47E8A273FF8121404",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n       \"project\":\r\n       {\r\n          \"key\": \"RESTAPI\"\r\n       },\r\n       \"issuetype\": {\r\n          \"name\": \"Bug\"\r\n       }\r\n   }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/api/2/issue?os_authType=cookie=10A1DBE75D49AFF47E8A273FF8121404",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue"
+					],
+					"query": [
+						{
+							"key": "os_authType",
+							"value": "cookie=10A1DBE75D49AFF47E8A273FF8121404"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_Issue",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/2/issue/10101",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"10101"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update_Comment",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\": \"Updating janani comment\",\r\n    \"visibility\": {\r\n        \"type\": \"role\",\r\n        \"value\": \"Administrators\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/api/2/issue/10100/comment/10000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"10100",
+						"comment",
+						"10000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_Issue",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/2/issue/10205",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"10205"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

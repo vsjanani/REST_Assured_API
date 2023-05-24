@@ -909,6 +909,19 @@ c6ab08823ce97c3339ab9e7f798da498
 c6ab08823ce97c3339ab9e7f798da498
 cbbb4ae6dc2ce1bc6678691b2367ba94
 cbbb4ae6dc2ce1bc6678691b2367ba94
+c4044fe7263a3aa4a35fb8239a7378d5
+c4044fe7263a3aa4a35fb8239a7378d5
+dinesh barking
+b34d96b0538785dfde91f4f3586b8266
+b34d96b0538785dfde91f4f3586b8266
+dinesh barking
+9bc7e2c1b03644c882b8b5807db4157b
+9bc7e2c1b03644c882b8b5807db4157b
+20dfd9dfb1ec675389e294c62cfd1672
+287e16b61ee2c7b608589f3878337188
+343b532379fe2383f4a7b46476a414bd
+a7d04f585fdd2dc2a938d392d5cd48d9
+
 
 
 Framework Structure:
@@ -964,11 +977,32 @@ public AddSerialisation bodyForAddAPIwithParams(String strName, String strAddres
 		objAddSerialisationwithParams.setWebsite("https://sanjeevKrish.com");
 
 
+*****************************
 
+Now, the resources also should be given via some enum class. Below class can be easily created by eclipse with auto suggestion. create enum methods of constAddAPI and deleteapi. An error gets highlighted, click it to create constructor. Coz, constructor is important in enum class to get access to methods and variables.
 
+Now, create a getter method for the variable strAPIResource. This will return the variable.
 
+package bddFramework.cucumber.resources;
 
+public enum APIresources {
+	
+	constAddAPI("maps/api/place/add/json"),
+	constDeleteAPI("maps/api/place/delete");
 
+	private String strAPIResource;
+
+	
+	APIresources(String strAPIResource) {
+		// TODO Auto-generated constructor stub
+		this.strAPIResource = strAPIResource;
+	}
+	
+	public String getAPIResource() {
+		return strAPIResource;
+	}	
+
+}
 
 
 

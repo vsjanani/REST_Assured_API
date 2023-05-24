@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "264a48e8-4f5a-44ba-9b31-fc4550e8ca51",
+		"name": "Parameterization_TestNG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PostRequest",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"Learn REST\",\r\n\"isbn\":\"vsj\",\r\n\"aisle\":\"001\",\r\n\"author\":\"jacob andrew\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://216.10.245.166/Library/Addbook.php",
+					"protocol": "http",
+					"host": [
+						"216",
+						"10",
+						"245",
+						"166"
+					],
+					"path": [
+						"Library",
+						"Addbook.php"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,155 @@
+{
+	"info": {
+		"_postman_id": "09a5a721-298f-4653-96f0-cc16d8653d69",
+		"name": "Manual_Testing_Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PostRequest",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"location\": {\r\n    \"lat\": -38.383494,\r\n    \"lng\": 33.427362\r\n  },\r\n  \"accuracy\": 50,\r\n  \"name\": \"dummyyyy house\",\r\n  \"phone_number\": \"(+91) 983 893 3937\",\r\n  \"address\": \"29, side layout, cohen 09\",\r\n  \"types\": [\r\n    \"shoe park\",\r\n    \"shop\"\r\n  ],\r\n  \"website\": \"http://google.com\",\r\n  \"language\": \"French-IN\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rahulshettyacademy.com/maps/api/place/add/json?key=qaclick123",
+					"protocol": "https",
+					"host": [
+						"rahulshettyacademy",
+						"com"
+					],
+					"path": [
+						"maps",
+						"api",
+						"place",
+						"add",
+						"json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "qaclick123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRequest",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://rahulshettyacademy.com/maps/api/place/get/json?key=qaclick123&place_id=0e78f7c800b6032e57cc310359a882a6",
+					"protocol": "https",
+					"host": [
+						"rahulshettyacademy",
+						"com"
+					],
+					"path": [
+						"maps",
+						"api",
+						"place",
+						"get",
+						"json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "qaclick123"
+						},
+						{
+							"key": "place_id",
+							"value": "0e78f7c800b6032e57cc310359a882a6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutRequest",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"place_id\":\"bfab8cb69713b9a389f96396df55e878\",\r\n\"address\":\"missionhighway, USA\",\r\n\"key\":\"qaclick123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rahulshettyacademy.com/maps/api/place/update/json",
+					"protocol": "https",
+					"host": [
+						"rahulshettyacademy",
+						"com"
+					],
+					"path": [
+						"maps",
+						"api",
+						"place",
+						"update",
+						"json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteRequest",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"place_id\":\"b4e6cae0d3ca3ba9882418859e3cb656\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rahulshettyacademy.com/maps/api/place/delete/json?key=qaclick123",
+					"protocol": "https",
+					"host": [
+						"rahulshettyacademy",
+						"com"
+					],
+					"path": [
+						"maps",
+						"api",
+						"place",
+						"delete",
+						"json"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "qaclick123"
+						},
+						{
+							"key": "place_id",
+							"value": "60bc31104f80eeca306516fde3460f43",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
