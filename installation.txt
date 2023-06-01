@@ -13,12 +13,16 @@ commons lang -> to use like StringUtils.stringbetween two strings etc.
 cucumber-java
 cucumber-junit
 
+
 for POJO:
 jackson databind
 jackson annotation
 jackson core
 //annotation and core will be under databind in separate table in mvn repository.
 gson
+
+plugin:
+cucumber-report - masterthought damianszczepanik (give latest version shown in github with label mvn central)
 
 
 **********************************************

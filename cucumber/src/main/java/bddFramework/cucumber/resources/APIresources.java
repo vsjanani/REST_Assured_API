@@ -4,7 +4,7 @@ public enum APIresources {
 
 	ADDAPI("maps/api/place/add/json"),
 	GETAPI("maps/api/place/get/json"),
-	DELETEAPI("maps/api/place/delete");
+	DELETEAPI("maps/api/place/delete/json");
 
 	private String strAPIResource;
 

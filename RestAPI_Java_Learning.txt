@@ -898,24 +898,24 @@ public void he_faints(String string) {
 
 Cucumber framework for google API:
 
-Lesson-1: glue can work if there is only on stepdefinition file. but feature can be directly mentioned under "features" in test runner.
+Lesson-1: glue can work if there is only one stepdefinition file. but feature can be directly mentioned under "features" in test runner.
 
-place_id e1cddc0716ccb181d1a0c889c4a89f48, 31d32565ca014342700b45d201090e28, a014b81ef7b4a0be678ac3ff179f6883, 193b2d161128c461b583e8244e12da80
+Lesson -2: if there is any error during execution, check for logs to see if our input details are correct and compare once with postman manual hit. It will solve the error.
+
+Lesson-3: static variable can be accessed like classname.staticvariablename as static variable belongs to class and it is object independent. this is in reference to hooks, if(stepdef.placeid==null) statment
+
+
+place_ids created during execution:
+e1cddc0716ccb181d1a0c889c4a89f48
+31d32565ca014342700b45d201090e28
+a014b81ef7b4a0be678ac3ff179f6883
+193b2d161128c461b583e8244e12da80
 7ef69d79f092cf6e6e47896be49ba555
 224c9a5f791781118f170ecba014473c
 90237977c3358a37985726ea9e0c1a88
-90237977c3358a37985726ea9e0c1a88
-c6ab08823ce97c3339ab9e7f798da498
 c6ab08823ce97c3339ab9e7f798da498
 cbbb4ae6dc2ce1bc6678691b2367ba94
-cbbb4ae6dc2ce1bc6678691b2367ba94
-c4044fe7263a3aa4a35fb8239a7378d5
-c4044fe7263a3aa4a35fb8239a7378d5
-dinesh barking
 b34d96b0538785dfde91f4f3586b8266
-b34d96b0538785dfde91f4f3586b8266
-dinesh barking
-9bc7e2c1b03644c882b8b5807db4157b
 9bc7e2c1b03644c882b8b5807db4157b
 20dfd9dfb1ec675389e294c62cfd1672
 287e16b61ee2c7b608589f3878337188
@@ -926,11 +926,49 @@ a7d04f585fdd2dc2a938d392d5cd48d9
 
 Framework Structure:
 
-Feature, step defintions (test runner.java links both)
+Maven project: src and main folder created.
 
-Step Definition extends utilities and payload files.
+src: Packages for Feature, step defintions and test runner.java and each package contains class.
+
+glue can work if there is only one stepdefinition file. but feature can be directly mentioned under "features" in test runner.
+features = "src/test/java/bddFramework/cucumber/featureFiles/GoogleAPIs.feature"
+
+
+main: packages for resources, pojo and payload is present.
+
+resources has APIresource, global.properties and utilities.
+pojo has serialise and deserialise files.
+payload creates object for pojo and give input details to create payload, returns the object. this object is input to body(payloadobject) in step definition file.
+
+Connecting all packages:
+Feature is by default connected to step definition. Check click ctrl+space on each feature steps if it opens in step def file. If not, right click on project and convert it to cucumber project.
 
 Payload files creates object of pojo files.
+
+Step Definition file extends/inherits utilities and creates object for payload files.
+
+Utlities gets properties from global.properties file.Utilities only carry request specification and global propery acquisition method.
+
+APIresources is a enum class contains all resources to make it as end point like ADDAPI("maps/api/place/add/json")
+
+Framework creation or Framework structure or Framework architecture or Framework diagram:
+
+												    child			
+							 enum class for API resources     Hooks
+									|classname.valueOf  using annotations like @Before("DeleteGoogleAPI"). 
+									V(enumconstant)	 >        ^
+												/objcrn   |extends		
+
+		objcreation	via testng Parent  		  child    		    extends Parent     system.getproperty		  
+extentreport --->		Listener  Featurefile  <-->  StepDefinition 	      <---  Utilities       <---   global.properties
+									^			
+									| obj creation							
+							payload creation.java																									^
+									|obj creation							
+							Pojoserialiseor deserialise																			
+
+
+
 
 Dynamic data driven from feature file:
 
@@ -1006,3 +1044,112 @@ public enum APIresources {
 
 
 
+Utility file logic:
+
+static RequestSpecification objReqSpec;
+	FileOutputStream objFOS;
+
+	public RequestSpecification requestSpec() throws IOException {
+
+		if (objReqSpec == null) {
+			objFOS = new FileOutputStream("TestLogs.txt", false);
+		}
+		objFOS = new FileOutputStream("TestLogs.txt", true);
+		PrintStream objPrintStream = new PrintStream(objFOS);
+		objReqSpec = new RequestSpecBuilder().setRelaxedHTTPSValidation().setBaseUri(globalData("baseURI"))
+				.setContentType(ContentType.JSON).addQueryParam("key", "qaclick123")
+				.addFilter(RequestLoggingFilter.logRequestTo(objPrintStream))
+				.addFilter(ResponseLoggingFilter.logResponseTo(objPrintStream))
+				.addFilter(ErrorLoggingFilter.logErrorsTo(objPrintStream)).build();
+		return objReqSpec;
+//		}
+
+
+Here, objReqSpec is made static, so that, if objrequspec is null when it is called for first time, log file will be created freshly due to false in FILE OUTPUTSTREAM. If, objreqspec is not null, logs wil be appended.
+
+To avoid static, logic can be written as, hitting first 0, second time 1, if, i>0, it will be true something like that.
+
+similarly, place_id also static in stepdef file. coz, place_id is grabbed from google map add scenario and used the same to delete in delete google map scenario. Same value used for two scenarios. 
+Always note that, for each scenario, variables declared will become null. To use same variable, it can be made as class variable, but to use same variable along with its value, it has to be made static class variable.
+
+Hooks:
+
+Hooks is used just like pre or post requisite in testng like @BeforeMethod or @Class. It is all based on feature file only.
+Here, its only @Before, @BeforeStep, @BeforeAll
+@Before - before scenario
+@BeforeStep - before scenario lines
+@BeforeAll - before all scenarios
+@AfterAll - after all scenarios.
+
+@Before runs before every scenario. @BeforeStep before every scenario step. 
+
+Its just a class with code like below:
+public class Hooks extends Utilities {
+
+	Response objWhenResp;
+
+	@Before("@DeleteGoogleAPI")
+	public void beforeAddition() throws IOException {
+		StepDefinitions objStepDef = new StepDefinitions();
+		if (StepDefinitions.strActualPlaceIDValue == null) {
+			objStepDef.json_payload_and_header_key();
+			objWhenResp = objStepDef.user_hits_resource_using_http_method("ADDAPI", "POST");
+			StepDefinitions.strActualPlaceIDValue = respToJsonPath(objWhenResp, "place_id");
+		}
+	}
+}
+
+Concept is, it is like dependonmethods in testng. if only deleteapi is called, place_id cannot created and used, hence, hooks is used to run few methods to generate place_id and proceed with execution.
+
+if you are using Maven and want to run a subset of scenarios tagged with @smoke:
+
+mvn test -Dcucumber.filter.tags="@smoke"
+
+sameway, cucumber.features= can be used to run using feature
+
+Final test runner file:
+
+package bddFramework.cucumber.testRunner;
+
+import org.junit.runner.RunWith;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features = "src/test/java/bddFramework/cucumber/featureFiles/GoogleAPIs.feature", 
+glue = {"bddFramework.cucumber.stepDefinitions"}, 
+tags = ("@AddGoogleAPI"),dryRun=false,monochrome = true,
+plugin = {"pretty", "summary", "json:target/jsonReports/cucumber-report.json"})
+
+//if you want to tell Cucumber to print code snippets for missing step definitions use the summary plugin, you can specify it like above
+// if you want to check whether all feature file steps have corresponding step definitions, you can specify dryRun as true. By default it is false
+public class TestRunner {
+}
+}
+
+*********************************
+
+cucumber reporting:
+
+cucumber damianszczepanik plugin can convert only json to html report. hence, json conversion is done in testrunner file shown above (json:target etc)
+now, in that masterthought plugin, give latest version shown in github with label mvn central.
+
+
+***************************************
+
+Jenkins:
+
+same process like learnt before.
+
+command used:
+
+test -D cucumber.filter.tags=@$Tags
+
+choice parameter is named as tags like Name? Tags and 
+Choices?
+AddGoogleAPI
+AddGoogleAPIwithParams
+DeleteGoogleAPI
+Regression
+
+@ is used because, we run maven as: mvn test -D cucumber.filter.tags=@AddGoogleAPI //note that there should not be any spaces betweetn tags=@ Tried with spaces, and its throwing error. But quotes for @AddGoogleAPI isn't really required. hence in jenkins it is, @$Tags.
