@@ -37,7 +37,7 @@ public class Basics {
 		System.out.println(objGetJsonPath.getString("address"));
 		Assert.assertEquals(objGetJsonPath.getString("address"), strUpdatedAddress);
 		
-
+		
 	}
 
 }

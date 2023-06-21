@@ -237,6 +237,8 @@ go to command terminal C:\Users\jansr\Atlassian\Jira\bin
 
 Once in that sub-directory type Start-jira.bat /fg and press ENTER, to load your local host 8080
 
+Note that: Key while creating project is used to let API know for which project we need to create issue or bug or anything whereas sessionkey is used to login under which user. So all the activities will be tagged under that particular user
+
 api contract(below details are obtained from jira rest url :
 Authentication:
 
@@ -959,7 +961,7 @@ Framework creation or Framework structure or Framework architecture or Framework
 									V(enumconstant)	 >        ^
 												/objcrn   |extends		
 
-		objcreation	via testng Parent  		  child    		    extends Parent     system.getproperty		  
+		objcreation	via testng Parent  		  child    	    extends Parent     system.getproperty		  
 extentreport --->		Listener  Featurefile  <-->  StepDefinition 	      <---  Utilities       <---   global.properties
 									^			
 									| obj creation							
@@ -1153,3 +1155,51 @@ DeleteGoogleAPI
 Regression
 
 @ is used because, we run maven as: mvn test -D cucumber.filter.tags=@AddGoogleAPI //note that there should not be any spaces betweetn tags=@ Tried with spaces, and its throwing error. But quotes for @AddGoogleAPI isn't really required. hence in jenkins it is, @$Tags.
+
+Graph QL:
+It is a scripting language like SQL but to hit multiple API's and get only needed details from each api.
+Benefit:
+It increase the performance as not all fields are retrieved, only needed details are fetched.
+If dev created graphql, ask for explorer.
+
+
+Hashmap to Json:
+
+It is rest assured job to convert hashmap to json. Hence, hashmap is directly passed.
+similary, from excel, hashmap can be created and passed directly inside method body().
+Only in selenium, we need objectmapper class to convert json to hashmap.
+
+Note that hashmap should have HashMap<String, Object> myMap = new HashMap<String, Object>();
+string object datatype. only then rest assured can recognise it.
+
+import java.util.HashMap;
+
+import org.testng.annotations.Test;
+
+public class HashMapToJson {
+	@Test
+	public void dum() {
+		HashMap<String, Object> myMap = new HashMap<String, Object>();
+		myMap.put("name", "janani");
+		myMap.put("class", "2");
+		System.out.println(myMap);
+		//note that, it is still hasmap but its rest assured library job to convert into json when passed inside body() method.
+	}
+
+}
+ 
+
+DataFormatter:
+
+This class can be used to format the cell value to string though it is int.
+Check below code for reference.
+Note: getCell(j) is used to directly format. But to perform any string actions like, .equal or assigning the output to a String variable, getStringCellValue should be used.
+DataFormatter objDataFormatter = new DataFormatter();
+		for(int i=0;i<intTotalRows;i++) {
+			if(objWorkSheet.getRow(i).getCell(0).getStringCellValue().equals("AddBook")){
+				for(int j=1; j<objWorkSheet.getRow(i).getLastCellNum(); j++) {
+					String strKey = objWorkSheet.getRow(0).getCell(j).getStringCellValue();
+					System.out.println(objWorkSheet.getRow(i).getCell(j));
+					Object objValue = objDataFormatter.formatCellValue(objWorkSheet.getRow(i).getCell(j));
+					objHashMap.put(strKey, objValue);
+					

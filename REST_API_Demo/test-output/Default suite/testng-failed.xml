@@ -3,11 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Pojo_Serialisation">
+      <class name="ExcelToHashMapToJson">
         <methods>
-          <include name="pojoSerialisation"/>
+          <include name="excelToHashMap"/>
         </methods>
-      </class> <!-- Pojo_Serialisation -->
+      </class> <!-- ExcelToHashMapToJson -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
