@@ -2,16 +2,16 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-06-20T21:47:39 PDT" name="Default suite" finished-at="2023-06-20T21:47:41 PDT" duration-ms="1356">
+  <suite started-at="2023-06-25T04:53:43 PDT" name="Default suite" finished-at="2023-06-25T04:53:46 PDT" duration-ms="3513">
     <groups>
     </groups>
-    <test started-at="2023-06-20T21:47:39 PDT" name="Default test" finished-at="2023-06-20T21:47:41 PDT" duration-ms="1356">
-      <class name="ExcelToHashMapToJson">
-        <test-method signature="excelToHashMap()[pri:0, instance:ExcelToHashMapToJson@7db12bb6]" started-at="2023-06-20T21:47:39 PDT" name="excelToHashMap" finished-at="2023-06-20T21:47:41 PDT" duration-ms="1273" status="PASS">
+    <test started-at="2023-06-25T04:53:43 PDT" name="Default test" finished-at="2023-06-25T04:53:46 PDT" duration-ms="3513">
+      <class name="DeleteBook">
+        <test-method signature="chumma()[pri:0, instance:DeleteBook@7d4f9aae]" started-at="2023-06-25T04:53:43 PDT" name="chumma" finished-at="2023-06-25T04:53:46 PDT" duration-ms="3421" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- excelToHashMap -->
-      </class> <!-- ExcelToHashMapToJson -->
+        </test-method> <!-- chumma -->
+      </class> <!-- DeleteBook -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

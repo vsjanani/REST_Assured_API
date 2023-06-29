@@ -906,6 +906,13 @@ Lesson -2: if there is any error during execution, check for logs to see if our 
 
 Lesson-3: static variable can be accessed like classname.staticvariablename as static variable belongs to class and it is object independent. this is in reference to hooks, if(stepdef.placeid==null) statment
 
+Leson-4: pojo doesn't support uppercase key values.
+for eg: if json is 
+{
+    "ID" : "hell222"
+}
+
+pojo cannot be created for ID. By default it is taken as id only.
 
 place_ids created during execution:
 e1cddc0716ccb181d1a0c889c4a89f48
@@ -1109,6 +1116,13 @@ mvn test -Dcucumber.filter.tags="@smoke"
 
 sameway, cucumber.features= can be used to run using feature
 
+****************************
+Test Runner params:
+
+if you want to tell Cucumber to print code snippets in console for missing step definitions use the summary plugin, you can specify it like above
+note that in junit also missing code snippets gets printed but that comes up with two extra lines which isn't user friendly to copy.
+ if you want to check whether all feature file steps have corresponding step definitions, you can specify dryRun as true. By default it is false
+
 Final test runner file:
 
 package bddFramework.cucumber.testRunner;
@@ -1123,8 +1137,6 @@ glue = {"bddFramework.cucumber.stepDefinitions"},
 tags = ("@AddGoogleAPI"),dryRun=false,monochrome = true,
 plugin = {"pretty", "summary", "json:target/jsonReports/cucumber-report.json"})
 
-//if you want to tell Cucumber to print code snippets for missing step definitions use the summary plugin, you can specify it like above
-// if you want to check whether all feature file steps have corresponding step definitions, you can specify dryRun as true. By default it is false
 public class TestRunner {
 }
 }
@@ -1135,7 +1147,9 @@ cucumber reporting:
 
 cucumber damianszczepanik plugin can convert only json to html report. hence, json conversion is done in testrunner file shown above (json:target etc)
 now, in that masterthought plugin, give latest version shown in github with label mvn central.
+now under cucumber-html-reports, look for cucumber-feature.html where we can see the report.
 
+Remove classification tag from plugin.
 
 ***************************************
 

@@ -1,4 +1,7 @@
 import java.io.File;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,12 +13,15 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.annotations.Test;
 
+import io.restassured.RestAssured;
+
 public class ExcelToHashMapToJson {
 
 	HashMap<String, Object> objHashMap = new HashMap<String, Object>();
+
 	@Test
-	public void excelToHashMap() throws IOException {
-		
+	public HashMap excelToHashMap() throws IOException {
+
 		FileInputStream objFIS = new FileInputStream(new File("C://Users//jansr//Downloads//DemoDataSetUp.xlsx"));
 		XSSFWorkbook objWorkBook = new XSSFWorkbook(objFIS);
 		XSSFSheet objWorkSheet = objWorkBook.getSheet("RestAssured");
@@ -35,14 +41,16 @@ public class ExcelToHashMapToJson {
 
 		}
 
-
 		System.out.println(objHashMap);
+		return objHashMap;
 
 	}
-	
+
 	@Test
-	public void addBook() {
-		
+	public void addBook() throws IOException {
+		baseURI = "http://216.10.245.166";
+		RestAssured.basePath = "Library";
+		given().header("Content-Type", "application/json").body(excelToHashMap()).when().post("Addbook.php").then().log().body();
 	}
 
 }
