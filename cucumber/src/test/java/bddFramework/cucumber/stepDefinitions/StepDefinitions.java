@@ -59,7 +59,6 @@ public class StepDefinitions extends Utilities {
 		return objWhenResp;
 
 	}
-
 	@Then("Response Status code should be {int}")
 	public void Response_Status_code_should_be(int intExptdStatusCode) {
 		Assert.assertEquals(intExptdStatusCode, objWhenResp.getStatusCode());
