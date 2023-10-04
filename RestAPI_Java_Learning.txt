@@ -21,7 +21,7 @@ google.com/maps -> google.com is baseurl and maps is a resource or collection Bo
 google.com/images -> google.com is baseurl and images is a resource
 
 Path Parameter:
-https://www.google.com/maps/111234 -> google.com is baseurl and maps is a resource or collectionor
+https://www.google.com/maps/111234 -> google.com is baseurl and maps is a resource or 
 collection, 111234 is a path parameter or ID or subresource, requesting api with response for parameter only 111234.
 
 https://www.amazon.com/orders?sort_ by=20/12/2020  -> here date is not a sub resource, it is not drilling into orders, its just fetching the existing order by filtering. ? is query parameter.
@@ -90,7 +90,8 @@ public class Basics {
 		// TODO Auto-generated method stub
 		baseURI = "https://rahulshettyacademy.com";
 		given().header("Content-Type","application/json").queryParam("key", "qaclick123")
-		.body("{\r\n"
+		.body
+r\n"
 				+ "  \"location\": {\r\n"
 				+ "    \"lat\": -38.383494,\r\n"
 				+ "    \"lng\": 33.427362\r\n"
@@ -242,7 +243,9 @@ Note that: Key while creating project is used to let API know for which project 
 api contract(below details are obtained from jira rest url :
 Authentication:
 
-https://developer.atlassian.com/cloud/jira/platform/jira-rest-api-cookie-based-authentication/)
+
+https://developer.atlassian.com/server/jira/platform/cookie-based-authentication/
+
 baseuri - http://localhost:8080/rest/auth/1/session
 body: { "username": "janani", "password": "SanjeevKrish@01" }  //this is our jira login credentials)
 
@@ -413,7 +416,7 @@ On clicking login, details goes to authorisation server and it returns a code wi
 
 2. Access token:
 URL can be constructed using below contract details(https://www.googleapis.com/oauth2/v4/token/<other contract query params details>.
-rahulshettyacademy.com(or trip advisor) sends that code to resource server of google. And the server will return access token.
+rahulshettyacademy.com3or trip advisor) sends that code to resource server of google. And the server will return access token.
 
 3. Use Access Token to hit api and get details:
 URL can be constructed using below contract details(https://rahulshettyacademy.com/getCourse.php/<other contract query params details>. 
@@ -477,7 +480,7 @@ public class myJson(){
 private String message; // here same message is defined. if a variable names are defined something else, "something went wrong" error will be thrown.
 
 public void setMessage(String Message){
-this.message = message;
+this.message = Message;
 }
 
 public String getMessage(){
@@ -486,7 +489,7 @@ return message;
 }
 
 myJson objmyJson = new myJson();
-objmyJson.setMessage();
+objmyJson.setMessage("hello");
 
 
 To get pojo format automatically via eclipse:
@@ -504,11 +507,11 @@ If the JSON fields are never changing, go with POJO for better readability.
 
 POJO_Demo objPojoClass = given().relaxedHTTPSValidation().queryParam("access_token", strAccessToken).expect().defaultParser(Parser.JSON)
 		.when().get("getCourse.php")
-		.then().log().all().extract().response().as(POJO_Demo.class);
+		.then().log().all().extract().response().as(POJO_Demo.class); //name of this class changed to Pojo_Json_Deserialisation
 
 
 
-to see that POJO_Demo.class, refere eclipse.
+to see that Pojo_Json_Deserialisation.class, refere eclipse.
 public Courses getCourses() {
 		return courses;
 	}
@@ -561,6 +564,9 @@ To create json body using pojo and give as input in given().body(). see the belo
 
 
 Json for which pojo creation done below is:
+
+class location
+string accuracy, name, phone, address, list of String in types, website, language
 
 {
   "location": {
@@ -906,7 +912,7 @@ Lesson -2: if there is any error during execution, check for logs to see if our 
 
 Lesson-3: static variable can be accessed like classname.staticvariablename as static variable belongs to class and it is object independent. this is in reference to hooks, if(stepdef.placeid==null) statment
 
-Leson-4: pojo doesn't support uppercase key values.
+Leson-4: pojo doesn't support uppercase(capital) key values.
 for eg: if json is 
 {
     "ID" : "hell222"
@@ -1033,23 +1039,43 @@ Now, create a getter method for the variable strAPIResource. This will return th
 package bddFramework.cucumber.resources;
 
 public enum APIresources {
-	
-	constAddAPI("maps/api/place/add/json"),
-	constDeleteAPI("maps/api/place/delete");
+
+	ADDAPI("maps/api/place/add/json"),
+	GETAPI("maps/api/place/get/json"),
+	DELETEAPI("maps/api/place/delete/json");
 
 	private String strAPIResource;
 
-	
 	APIresources(String strAPIResource) {
 		// TODO Auto-generated constructor stub
 		this.strAPIResource = strAPIResource;
 	}
-	
+
 	public String getAPIResource() {
 		return strAPIResource;
-	}	
+	}
 
 }
+
+	
+
+calling the above class as below:
+
+@When("User hits {string} resource using http method {string}")
+	public Response user_hits_resource_using_http_method(String strAPIResource, String strHTTPMethod) {
+
+		APIresources mystr = APIresources.valueOf(strAPIResource);
+		String strAPIResourceToSend = mystr.getAPIResource();
+		if (strHTTPMethod.equalsIgnoreCase("POST")) {
+			objWhenResp = objGivenSpec.when().post(strAPIResourceToSend);
+		} else if (strHTTPMethod.equalsIgnoreCase("GET")) {
+			objWhenResp = objGivenSpec.when().get(strAPIResourceToSend);
+		} else if (strHTTPMethod.equalsIgnoreCase("DELETE")) {
+			objWhenResp = objGivenSpec.when().delete(strAPIResourceToSend);
+		}
+		return objWhenResp;
+
+	}
 
 
 

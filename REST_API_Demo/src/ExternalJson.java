@@ -16,18 +16,13 @@ import org.apache.commons.io.FileUtils;
 public class ExternalJson {
 	BodyContent objBodyContent = new BodyContent();
 	@Test
-	public void dynamicJson() {
+	public void dynamicJson() throws IOException {
 		RestAssured.baseURI = "http://216.10.245.166";
-		try {
-			given()
-				.header("Content-Type","application/json")
-				.body(FileUtils.readFileToString(new File("C:/Users/jansr/Downloads/REST_Assured_API/BodyContent.json"), StandardCharsets.UTF_8))
-			.when().post("Library/Addbook.php")
-			.then().log().body().assertThat().statusCode(200);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		given()
+			.header("Content-Type","application/json")
+			.body(new File("C:/Users/jansr/Downloads/REST_Assured_API/BodyContent.json"))
+		.when().post("Library/Addbook.php")
+		.then().log().body().assertThat().statusCode(200);
 		
 	}
 	

@@ -46,7 +46,7 @@ public class StepDefinitions extends Utilities {
 
 	@When("User hits {string} resource using http method {string}")
 	public Response user_hits_resource_using_http_method(String strAPIResource, String strHTTPMethod) {
-
+		
 		APIresources mystr = APIresources.valueOf(strAPIResource);
 		String strAPIResourceToSend = mystr.getAPIResource();
 		if (strHTTPMethod.equalsIgnoreCase("POST")) {

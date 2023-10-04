@@ -2,12 +2,12 @@ install below softwares:
 eclipse
 java
 cucumber plugin in eclipse
-
+maven
 
 dependancies in pom.xml (remove <scope> tag inside <dependancy> if present so that, dependancies work)
 rest-assured
 testng
-hamcrest //for assertion in side then() 
+hamcrest //for assertion inside then() 
 commons io
 commons lang -> to use like StringUtils.stringbetween two strings etc.
 cucumber-java

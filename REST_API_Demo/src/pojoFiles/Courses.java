@@ -7,6 +7,7 @@ public class Courses {
 	private List<Api> api;
 	private List<Mobile> mobile;
 	
+	
 	public List<WebAutomation> getWebAutomation() {
 		return webAutomation;
 	}
