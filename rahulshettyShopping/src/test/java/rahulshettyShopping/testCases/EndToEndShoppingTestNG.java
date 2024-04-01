@@ -37,6 +37,7 @@ public class EndToEndShoppingTestNG {
 		RequestSpecification objGivenSpec = given().spec(objReqSpec).log().all().body(loginRequest);
 		objJsonPath = objGivenSpec.when().post("api/ecom/auth/login").then().log().body().extract().response()
 				.jsonPath();
+		
 
 	}
 

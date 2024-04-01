@@ -4,7 +4,7 @@ If UI is in angular or tagged to another UI like yellowpages, tripadvisor etc, t
 
 UI(java) -> Backend code (java) -> database (api is not needed)
 UI(angular) -> Backend code (java) -> database (api is required to get data from angular, to convert user input details to json or xml format and send to backend code)
-UI of tripadvisor(java or any) -> Backend code of vythiri -> database (api is needed since, tripadvisor is another company which shouldn't or can't access backend code of vythiri.
+UI of tripadvisor(java or any) -> Backend code of vythiri -> dataabase (api is needed since, tripadvisor is another company which shouldn't or can't access backend code of vythiri.
 
 HTTP methods:
 
@@ -78,8 +78,7 @@ Usual eclipse create java proj, convert to maven, have dependancies in pom.xml.
 
 Basic code: 
 given (this method carries baseurl, query parameter, body-if any) 
-when (this method carries http method, resource and submit. To remember easily, top line should come in when except baseurl)
-then (verify response)
+when (this method carries http method, resource and submit. To remember easily, all the params should be given. Only resource and crud operation in when.
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -183,7 +182,7 @@ Assume if dev has only output format of json but the api which produce the outpu
 Dynamic Json:
 Like above, cannot use same data in api, it ll throw error as data already exists. In such case, we have to give new data each time or post and delete immediately.
 
-mostly it will be static json unless client needs to validate with multipLe data.
+mostly it will be static json unless client needs to validate with multiple data.
 
 @Test(dataProvider="sendData")
 	public void dynamicJson(String isbn, String aisle) {
@@ -242,7 +241,6 @@ Note that: Key while creating project is used to let API know for which project 
 
 api contract(below details are obtained from jira rest url :
 Authentication:
-
 
 https://developer.atlassian.com/server/jira/platform/cookie-based-authentication/
 
@@ -1243,3 +1241,80 @@ DataFormatter objDataFormatter = new DataFormatter();
 					Object objValue = objDataFormatter.formatCellValue(objWorkSheet.getRow(i).getCell(j));
 					objHashMap.put(strKey, objValue);
 					
+
+
+Response specification like request spec builder:
+
+package tests;
+
+import org.hamcrest.Matchers;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.specification.ResponseSpecification;
+
+public class Testeg {
+	ResponseSpecification respSpec = null;
+
+	@BeforeClass
+	public void setRespSpec()
+	{
+		// Creating a ResponseSpecification in REST Assured.
+		respSpec=  RestAssured.expect();
+		respSpec.contentType(ContentType.JSON);
+		respSpec.statusCode(200);
+		respSpec.time(Matchers.lessThan(5000L));
+		respSpec.statusLine("HTTP/1.1 200 OK");
+
+	}
+
+	@Test
+	public void getBookings()
+	{
+
+		// Given method
+		RestAssured
+  		.given()
+		.baseUri("https://restful-booker.herokuapp.com")
+
+		// When method
+  		.when()
+  		.get("/booking")
+
+		// Then method
+  		.then()
+  
+  		// passing the created Response specification
+  		.spec(respSpec)
+
+		// Verifying booking count
+  		.body("size()", Matchers.greaterThan(5));
+
+	}
+
+	@Test
+	public void invalidName()
+	{
+
+		// Given method
+		RestAssured
+  		.given()
+		.baseUri("https://restful-booker.herokuapp.com")
+
+		// When method
+  		.when()
+  		.get("/booking?firstname=Gaurangi")
+
+		// Then method
+  		.then()
+
+
+        // Passing created ResponseSpecification
+  		.spec(respSpec)
+
+		// verifying count of bookings
+ 		 .body("size()", Matchers.equalTo(0));
+
+	}
+}

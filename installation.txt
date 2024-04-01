@@ -8,11 +8,10 @@ dependancies in pom.xml (remove <scope> tag inside <dependancy> if present so th
 rest-assured
 testng
 hamcrest //for assertion inside then() 
-commons io
+commons io - for java utils
 commons lang -> to use like StringUtils.stringbetween two strings etc.
 cucumber-java
 cucumber-junit
-
 
 for POJO:
 jackson databind
