@@ -968,9 +968,9 @@ Framework creation or Framework structure or Framework architecture or Framework
 
 												    child			
 							 enum class for API resources     Hooks
-									|classname.valueOf  using annotations like @Before("DeleteGoogleAPI"). 
-									V(enumconstant)	 >        ^
-												/objcrn   |extends		
+							|classname.valueOf  using annotations like @Before("DeleteGoogleAPI"). 
+							V(enumconstant)	 >        ^
+										/objcrn   |extends		
 
 		objcreation	via testng Parent  		  child    	    extends Parent     system.getproperty		  
 extentreport --->		Listener  Featurefile  <-->  StepDefinition 	      <---  Utilities       <---   global.properties
